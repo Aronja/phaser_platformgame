@@ -9,8 +9,10 @@
     game.load.image('sky', 'sky.png');
     game.load.image('ground', 'platform.png');
     game.load.image('star', 'star.png');
+    game.load.image("diamond", "diamond.png");
     game.load.spritesheet('dude', 'dude.png', 32, 48);
     game.load.spritesheet('baddie', 'baddie.png', 32, 32);
+    game.load.image("heart", "heart.png", 32, 32);
 
 
   }
@@ -24,11 +26,17 @@
   var scoreText;
   var baddie;
   var statusText;
-  // var winText;
+  var diamond;
+  var ledge;
+  var lifes = 2;
+  var heart;
+  var lifesText;
 
   function create() {
 
     game.add.text(380, 20, statusText);
+
+
 
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -52,16 +60,24 @@
     ground.body.immovable = true;
 
     //  Now let's create two ledges
-    var ledge = platforms.create(400, 400, 'ground');
+    ledge = platforms.create(400, 400, 'ground');
     ledge.body.immovable = true;
 
-    ledge = platforms.create(-150, 250, 'ground');
+    ledge = platforms.create(200, 200, 'ground');
     ledge.body.immovable = true;
+
+    ledge = platforms.create(-250, 300, "ground");
+    ledge.body.immovable = true;
+
+    heart = game.add.sprite(700, 20, "heart"); heart.scale.setTo(0.2,0.2);
+    game.add.text(720, 20, lifesText);
+
 
     // The player and its settings
     player = game.add.sprite(32, game.world.height - 150, 'dude');
 
     baddie = game.add.sprite(game.world.width - 64, game.world.height - 150, "baddie");
+
 
     game.physics.arcade.enable(baddie);
     //  We need to enable physics on the player
@@ -94,7 +110,7 @@
     for (var i = 0; i < 12; i++) {
       star = stars.create(i * 70, 0, "star");
 
-      star.body.gravity.y = 300;
+      star.body.gravity.y = Math.random()*100;
 
       star.body.bounce.y = 0.7 + Math.random() * 0.2;
 
@@ -105,13 +121,9 @@
       fontSize: '32px',
       fill: '#000'})
 
-    //
-    // winText = game.add.text(400, 300, 'You won!!!', {
-    // 	fontSize: '32px',
-    // 	fill: '#000'
-    // })
-
-
+    lifesText = game.add.text(720, 25,lifes,  {
+      fontSize: '32px',
+      fill: '#000'})
 
 
         var leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
@@ -205,16 +217,59 @@
 
         score += 10;
         scoreText.text = 'Score: ' + score;
-      }
 
 
-        // if (score = 120) {
-        // 		winText.text = "You won!"
-        // 	}
+
+        if (score === 120) {
+        		scoreText.text = "You won!"
+        	}
+        }
 
 
-      function touchBaddie(player, baddie) {
 
+
+
+// onHit: function(damage) {    if (!player.invincible) {
+//   game.time.events.add(2000, this.toggleInvincible, this);     }}toggleInvincible: function() {    player.invincible = !player.invincible;}
+
+function create() {
+
+    lifes = 2;
+
+    text = game.add.text(715,25, lifes, {
+        font: "65px Arial",
+        fill: "#ff0044",
+        align: "center"
+    });
+
+    text.anchor.setTo(0.5, 0.5);
+
+}
+
+function touchBaddie(player, baddie) {
+  if (lifes >= 0) {lifes -= 1;
+  lifesText = game.add.text(715,25,updateText, {
+    fontSize: '32px',
+    fill: '#000'
+  })
+}
+
+
+}
+
+
+function updateText() {
+
+    lifes--;
+
+    text.setText(lifes);
+
+}
+
+
+        console.log(lifes);
+
+        if (lifes == 0) {
         player.kill();
 
 
@@ -224,6 +279,6 @@
         });
         statusText.anchor.x = Math.round(statusText.width * 0.5) / statusText.width;
         console.log(statusText.width);
-      }
 
+      }
   }
