@@ -1,3 +1,5 @@
+/* global Phaser */
+
   var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
     preload: preload,
     create: create,
@@ -33,10 +35,11 @@
 
   const WINNING_SCORE = 120;
 
-  function createObject(stars, numberOfStars, spriteString, distance) {
+  function createObject(stars, numberOfStars, spriteString, distance, scale) {
     for (var i = 0; i < numberOfStars; i++) {
       star = stars.create(i * distance, 0, spriteString);
       star.body.gravity.y = Math.random() * 100;
+      star.scale.setTo(scale, scale);
       star.body.bounce.y = 0.7 + Math.random() * 0.2;
     }
   }
@@ -115,7 +118,7 @@
 
     stars = game.add.group();
     stars.enableBody = true;
-    createObject(stars, 12, "star", 70);
+    createObject(stars, 12, "star", 70, 1);
 
 
     scoreText = game.add.text(16, 16, 'score: 0', {
@@ -207,15 +210,15 @@
           b.kill();
         });
 
-        createObject(stars, 12, "star", 70);
+        createObject(stars, 12, "star", 70, 1);
 
         hearts = game.add.group();
         hearts.enableBody = true;
-        createObject(hearts, 6, "heart", 140);
+        createObject(hearts, 6, "heart", 140, 0.2);
       }
     }
 
-    function touchBaddie(player, baddie) {
+    function touchBaddie(player) {
       if (!player.invincible && player.health > 0) {
         player.health -= 1;
         lifesText.setText(player.health)
