@@ -47,31 +47,20 @@
   function create() {
     game.add.text(380, 20, statusText);
 
-    //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    //  A simple background for our game
     game.add.sprite(0, 0, 'sky');
 
-    //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
 
-    // JON: Ah, what is this? this looks like the array I was talking about, but it's not used it seems
-    //baddies = game.add.group();
-
-    //  We will enable physics for any object that is created in this group
     platforms.enableBody = true;
 
-    // Here we create the ground.
     var ground = platforms.create(0, game.world.height - 64, 'ground');
 
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     ground.scale.setTo(2, 2);
 
-    //  This stops it from falling away when you jump on it
     ground.body.immovable = true;
 
-    //  Now let's create two ledges
     ledge1 = platforms.create(400, 400, 'ground');
     ledge1.body.immovable = true;
 
@@ -88,7 +77,6 @@
     player = game.add.sprite(32, game.world.height - 150, 'dude');
     player.health = 3;
 
-    // JON: Here you could add them to a baddies array and initialises the classes
     baddie = game.add.sprite(game.world.width - 64, game.world.height - 150, "baddie");
     baddie1 = game.add.sprite(ledge2.position.x, (ledge2.position.y - 32), "baddie");
     baddie2 = game.add.sprite(ledge1.position.x, (ledge1.position.y - 32), "baddie");
@@ -196,7 +184,6 @@
     positionBaddie(ledge2, baddie1, 100);
     positionBaddie(ledge1, baddie2, 80);
 
-    // JON: Does this have to be inside the update function?
     function collectStar(player, star) {
       star.kill();
       score += 10;
