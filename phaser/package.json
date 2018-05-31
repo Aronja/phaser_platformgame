@@ -11,7 +11,7 @@
   "author": "Astrid Novicky",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.15.3"
+    "express": "^4.16.3"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

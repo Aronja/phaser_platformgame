@@ -45,28 +45,22 @@
   }
 
   function create() {
+
     game.add.text(380, 20, statusText);
-
     game.physics.startSystem(Phaser.Physics.ARCADE);
-
     game.add.sprite(0, 0, 'sky');
 
     platforms = game.add.group();
-
     platforms.enableBody = true;
 
     var ground = platforms.create(0, game.world.height - 64, 'ground');
-
     ground.scale.setTo(2, 2);
-
     ground.body.immovable = true;
 
     ledge1 = platforms.create(400, 400, 'ground');
     ledge1.body.immovable = true;
-
     ledge2 = platforms.create(200, 200, 'ground');
     ledge2.body.immovable = true;
-
     ledge3 = platforms.create(-250, 300, "ground");
     ledge3.body.immovable = true;
 
@@ -80,9 +74,7 @@
     baddie = game.add.sprite(game.world.width - 64, game.world.height - 150, "baddie");
     baddie1 = game.add.sprite(ledge2.position.x, (ledge2.position.y - 32), "baddie");
     baddie2 = game.add.sprite(ledge1.position.x, (ledge1.position.y - 32), "baddie");
-
     baddies.push(baddie, baddie1, baddie2);
-
 
     baddies.forEach(function(b) {
       game.physics.arcade.enable(b);
@@ -199,11 +191,22 @@
 
         createObject(stars, 12, "star", 70, 1);
 
-        hearts = game.add.group();
-        hearts.enableBody = true;
-        createObject(hearts, 6, "heart", 140, 0.2);
+        createHearts();
       }
     }
+
+function createHearts() {
+    hearts = game.add.group();
+    hearts.enableBody = true;
+    createObject(hearts, 6, "heart", 140, 0.2);
+
+    function collectHeart(player, heart) {
+      heart.kill();
+      player.health += 1;
+      lifesText.setText(player.health)
+      return player.health
+    }
+  }
 
     function touchBaddie(player) {
       if (!player.invincible && player.health > 0) {
