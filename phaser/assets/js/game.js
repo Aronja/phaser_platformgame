@@ -190,8 +190,9 @@
         });
 
         createObject(stars, 12, "star", 70, 1);
-
         createHearts();
+        collectHeart();
+
       }
     }
 
@@ -199,14 +200,15 @@ function createHearts() {
     hearts = game.add.group();
     hearts.enableBody = true;
     createObject(hearts, 6, "heart", 140, 0.2);
-
-    function collectHeart(player, heart) {
-      heart.kill();
-      player.health += 1;
-      lifesText.setText(player.health)
-      return player.health
-    }
   }
+
+function collectHeart(player, heart) {
+    heart.kill();
+    player.health += 1;
+    lifesText.setText(player.health)
+    return player.health
+    }
+
 
     function touchBaddie(player) {
       if (!player.invincible && player.health > 0) {
